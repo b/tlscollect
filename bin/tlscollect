@@ -1,0 +1,53 @@
+#!/usr/bin/env ruby
+#
+
+require 'getoptlong'
+require 'rdoc/usage'
+require 'socket'
+require "lib/tlscollect"
+
+opts = GetoptLong.new(
+  [ '--help', '-h', GetoptLong::NO_ARGUMENT ],
+  [ '--host', '-H', GetoptLong::REQUIRED_ARGUMENT ],
+  [ '--addr', '-a', GetoptLong::REQUIRED_ARGUMENT ],
+  [ '--port', '-p', GetoptLong::REQUIRED_ARGUMENT ]
+)
+
+host = addr = nil
+port = 443
+opts.each do |opt, arg|
+  case opt
+    when '--help'
+      RDoc::usage
+    when '--host'
+      host = arg
+    when '--addr'
+      addr = arg
+    when '--port'
+      post = arg.to_i
+  end
+end
+
+unless addr || host
+  puts "You must specify a hostname or IP address (or both!)"
+  exit 0
+end
+
+addrs = (addr ? [addr] : TCPSocket.gethostbyname(host)[3..-1])
+puts "Beginning collection for the following addresses:\n\t#{addrs.join("\n\t")}\n"
+addrs.each do |addr|
+  puts "\nTLS configuration for #{host} (#{addr}), port #{port}\n\n"
+
+  collector = TLSCollect::Collector.new(:host => host, :addr => addr, :port => port)
+  collector.collect
+
+  puts "available protocols:\n\t#{collector.protocols.join("\n\t")}\n\n"
+  puts "certificate:"
+  puts "\tsubject: #{collector.certificate.cn}"
+  puts "\tverified: #{collector.certificate.verified ? "YES" : "NO"}"
+  puts "\tkey length: #{collector.certificate.key_length}"
+  puts "\thash algorithm: #{collector.certificate.hash_algorithm}"
+  puts "\tencryption algorithm: #{collector.certificate.encryption_algorithm}\n\n"
+  puts "default cipher:\n\t#{collector.default_cipher.name}"
+  puts "available ciphers:\n\t#{collector.ciphers.map{|cipher| cipher.name}.join("\n\t")}\n\n"
+end
