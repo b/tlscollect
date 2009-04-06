@@ -4,7 +4,9 @@
 require 'getoptlong'
 require 'rdoc/usage'
 require 'socket'
-require "lib/tlscollect"
+
+$: << File.join(File.dirname(__FILE__), "..", "lib")
+require 'tlscollect'
 
 opts = GetoptLong.new(
   [ '--help', '-h', GetoptLong::NO_ARGUMENT ],
