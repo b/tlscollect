@@ -87,6 +87,7 @@ module TLSCollect
     end
   
     def valid?(hostname)
+      hostname &&
       (hostname.match(subject['CN'].gsub('*', '.*'))) &&
       !expired? &&
       raw.not_before < Time.now
