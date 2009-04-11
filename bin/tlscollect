@@ -2,14 +2,12 @@
 #
 
 require 'getoptlong'
-require 'rdoc/usage'
 require 'socket'
 
 $: << File.join(File.dirname(__FILE__), "..", "lib")
 require 'tlscollect'
 
 opts = GetoptLong.new(
-  [ '--help', '-h', GetoptLong::NO_ARGUMENT ],
   [ '--host', '-H', GetoptLong::REQUIRED_ARGUMENT ],
   [ '--addr', '-a', GetoptLong::REQUIRED_ARGUMENT ],
   [ '--port', '-p', GetoptLong::REQUIRED_ARGUMENT ]
@@ -19,8 +17,6 @@ host = addr = nil
 port = 443
 opts.each do |opt, arg|
   case opt
-    when '--help'
-      RDoc::usage
     when '--host'
       host = arg
     when '--addr'
@@ -32,9 +28,13 @@ end
 
 unless addr || host
   puts "You must specify a hostname or IP address (or both!)"
+  puts "  --host <host>"
+  puts "  --addr <address> [optional]"
+  puts "  --port <port> [default: 443]"
   exit 0
 end
 
+host ||= "Unknown"
 addrs = (addr ? [addr] : TCPSocket.gethostbyname(host)[3..-1])
 puts "Beginning collection for the following addresses:\n\t#{addrs.join("\n\t")}\n"
 addrs.each do |addr|
@@ -47,6 +47,7 @@ addrs.each do |addr|
   puts "certificate:"
   puts "\tsubject: #{collector.certificate.cn}"
   puts "\tverified: #{collector.certificate.verified ? "YES" : "NO"}"
+  puts "\tvalid for host: #{collector.certificate.valid?(host) ? "YES" : "NO"}"
   puts "\tkey length: #{collector.certificate.key_length}"
   puts "\thash algorithm: #{collector.certificate.hash_algorithm}"
   puts "\tencryption algorithm: #{collector.certificate.encryption_algorithm}\n\n"
