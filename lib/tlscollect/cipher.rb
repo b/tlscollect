@@ -1,7 +1,7 @@
 module TLSCollect
   class Cipher
     
-    attr_accessor :name, :kx_alg, :auth_alg, :bulk_alg, :hash_alg, :protocols, :alg_bits, :key_length, :order
+    attr_accessor :cipher, :kx_alg, :auth_alg, :bulk_alg, :hash_alg, :protocols, :alg_bits, :key_length, :order
   
     def self.parse(cipher_a)
       c = cipher_a[0].split('-')
@@ -29,13 +29,13 @@ module TLSCollect
       end
       n_hash = c.last
       n_bulk = c[0..(c.length - 2)].join('-')
-      n_name = cipher_a[0]
+      n_cipher = cipher_a[0]
       n_protocols = [cipher_a[-3].split('/')].flatten
       n_key_length = cipher_a[-2]
       exp = true if n_key_length < 128
       n_alg_bits = cipher_a.last
     
-      self.new(:name => n_name,
+      self.new(:cipher => n_cipher,
                :kx_alg => n_kx,
                :auth_alg => n_auth,
                :bulk_alg => n_bulk,
@@ -47,7 +47,7 @@ module TLSCollect
     end
   
     def initialize(params)
-      @name = params[:name]
+      @cipher = params[:cipher]
       @kx_alg = params[:kx_alg]
       @auth_alg = params[:auth_alg]
       @bulk_alg = params[:bulk_alg]
@@ -60,16 +60,16 @@ module TLSCollect
     end
   
     def to_s
-      name + " " + protocols.join('/')
+      cipher + " " + protocols.join('/')
     end
   
     def to_a
-      [name, protocols.join('/'), key_length, alg_bits]
+      [cipher, protocols.join('/'), key_length, alg_bits]
     end
   
     def to_h
       {
-       'name'     => name,
+       'cipher'     => cipher,
        'kx_alg'   => kx_alg,
        'auth_alg' => auth_alg,
        'bulk_alg' => bulk_alg,

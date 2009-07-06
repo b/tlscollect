@@ -50,7 +50,10 @@ addrs.each do |addr|
   puts "\tvalid for host: #{collector.certificate.valid?(host) ? "YES" : "NO"}"
   puts "\tkey length: #{collector.certificate.key_length}"
   puts "\thash algorithm: #{collector.certificate.hash_algorithm}"
-  puts "\tencryption algorithm: #{collector.certificate.encryption_algorithm}\n\n"
-  puts "default cipher:\n\t#{collector.default_cipher.name}"
-  puts "available ciphers:\n\t#{collector.ciphers.map{|cipher| cipher.name}.join("\n\t")}\n\n"
+  puts "\tencryption algorithm: #{collector.certificate.encryption_algorithm}"
+  puts "\tissued: #{collector.certificate.raw.not_before}"
+  puts "\texpires: #{collector.certificate.raw.not_after}"
+  puts "\n\n"
+  puts "default cipher:\n\t#{collector.default_cipher.cipher}"
+  puts "available ciphers:\n\t#{collector.ciphers.map{|cipher| cipher.cipher}.join("\n\t")}\n\n"
 end

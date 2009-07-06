@@ -210,7 +210,7 @@ module TLSCollect
             end
           end
           unless p_check
-            #puts "Protocol check is false for #{cipher.name}"
+            #puts "Protocol check is false for #{cipher.cipher}"
             next
           end
         
@@ -237,7 +237,7 @@ module TLSCollect
           d_ciphers.each do |d|
             tc = Cipher.parse(d)
             if j = included_cipher?(tc)
-              #puts "Adding protocols #{tc.protocols.join(', ')} to #{@ciphers[j].name}"
+              #puts "Adding protocols #{tc.protocols.join(', ')} to #{@ciphers[j].cipher}"
               @ciphers[j].protocols << tc.protocols if supported_protocol?(tc.protocols)
               @ciphers[j].protocols.flatten!
             else 
@@ -250,7 +250,7 @@ module TLSCollect
   
     def included_cipher?(cipher)
       @ciphers.each do |c|
-        if c.name == cipher.name
+        if c.cipher == cipher.cipher
           return @ciphers.index(c)
         end
       end
@@ -263,10 +263,10 @@ module TLSCollect
     end
   
     def delete_cipher(ciphers, cipher)
-      name = Cipher.parse(cipher).name
+      cipher = Cipher.parse(cipher).cipher
       d = []
       ciphers.each { |c|
-        d << ciphers.delete(c) if Cipher.parse(c).name == name
+        d << ciphers.delete(c) if Cipher.parse(c).cipher == cipher
       }
     
       [ciphers, d]
