@@ -2,7 +2,7 @@ module TLSCollect
   class Certificate
     
     attr_accessor :signature_algorithm, :hash_algorithm, :encryption_algorithm,
-                  :subject, :public_key, :raw, :verified
+                  :subject, :public_key, :raw, :verified, :not_before, :not_after
   
     def self.parse(params)
       pkey = params[:raw].public_key
@@ -110,17 +110,24 @@ module TLSCollect
     end
 
     def expired?
-      raw.not_after < Time.now
+      raw.not_after.tv_sec < Time.now.utc.tv_sec
     end
 
     def longevity?
       # allow 25 months, give or take
-      (raw.not_after.tv_sec - raw.not_before.tv_sec) <=  65836800
+      (not_after.tv_sec - not_before.tv_sec) <=  65836800
     end
   
     def invalid?(hostname)
       !valid?(hostname) || !verified
     end
   
+    def not_before
+      raw.not_before
+    end
+    
+    def not_after
+      raw.not_after
+    end
   end
 end
