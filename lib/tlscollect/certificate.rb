@@ -86,9 +86,14 @@ module TLSCollect
       Hash[*a.collect { |v| [v, v*2] }.flatten]
     end
   
+    def cn_matches?(hostname)
+      hostname.match(subject['CN'].sub(/^\*\./, '.*\.')) ||
+      hostname.match(subject['CN'].sub(/^\*\./, ''))
+    end
+
     def valid?(hostname)
       hostname &&
-      (hostname.match(subject['CN'].gsub('*', '.*'))) &&
+      cn_matches?(hostname) &&
       !expired? &&
       raw.not_before < Time.now
     end
