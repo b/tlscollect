@@ -1,3 +1,39 @@
 == tlscollect
 
-TLS server configuration collection and reporting.  Derived from the TLS Report.
+tlscollect reports on the cipher and certificate configuration of SSL/TLS servers.  It is useful both for checking your own server configurations and for inspecting configurations of sites you use.
+
+Use is simple:
+
+	tlscollect --host <hostname>
+
+tlscollect defaults to port 443 (https), but you can specify a different port using --port <port>.  If a hostname resolves to multiple IP addresses tlscollect will report on all of them.  If you only want a report on a specific IP address, use the --addr <address> option.
+
+Output from the tool is straightforward:
+
+	TLS configuration for www.google.com (74.125.224.20), port 443
+
+	available protocols:
+		TLSv1
+		SSLv3
+
+	certificate:
+		subject: www.google.com
+		valid for host: YES
+		key length: 1024
+		hash algorithm: SHA1
+		encryption algorithm: RSAEncryption
+		issued: Fri Dec 18 00:00:00 UTC 2009
+		expires: Sun Dec 18 23:59:59 UTC 2011
+		lifetime too long: NO
+
+	default cipher:
+		RC4-SHA
+
+	available ciphers:
+		RC4-SHA
+		RC4-MD5
+		AES256-SHA
+		AES128-SHA
+		DES-CBC3-SHA
+
+Comments?  b@b3k.us
