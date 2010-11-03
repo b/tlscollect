@@ -24,6 +24,7 @@ Output from the tool is straightforward:
 		encryption algorithm: RSAEncryption
 		issued: Fri Dec 18 00:00:00 UTC 2009
 		expires: Sun Dec 18 23:59:59 UTC 2011
+		
 	default cipher:
 		RC4-SHA
 
