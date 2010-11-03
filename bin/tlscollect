@@ -52,7 +52,7 @@ addrs.each do |addr|
   puts "\thash algorithm: #{collector.certificate.hash_algorithm}"
   puts "\tencryption algorithm: #{collector.certificate.encryption_algorithm}"
   puts "\tissued: #{collector.certificate.raw.not_before}"
-  puts "\texpires: #{collector.certificate.raw.not_after}#{(collector.certificate.expired? ? " (EXPIRED)" : "")}#{collector.certificate.longevity? ? " (TOO LONG)" : ""}"
+  puts "\texpires: #{collector.certificate.raw.not_after}#{(collector.certificate.expired? ? " (EXPIRED)" : "")}#{collector.certificate.longevity? ? "" : " (TOO LONG)"}"
   puts "default cipher:\n\t#{collector.default_cipher.cipher}\n\n"
   puts "available ciphers:\n\t#{collector.ciphers.map{|cipher| cipher.cipher}.join("\n\t")}\n\n"
 end
