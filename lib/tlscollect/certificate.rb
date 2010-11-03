@@ -114,6 +114,10 @@ module TLSCollect
       public_key.n.num_bytes * 8
     end
 
+    def short?
+      key_length < 2048
+    end
+
     def expired?
       raw.not_after.tv_sec < Time.now.utc.tv_sec
     end
