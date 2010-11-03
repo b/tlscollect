@@ -10,7 +10,7 @@ tlscollect defaults to port 443 (https), but you can specify a different port us
 
 Output from the tool is straightforward:
 
-	TLS configuration for www.google.com (74.125.224.20), port 443
+	TLS configuration for www.google.com (74.125.224.17), port 443
 
 	available protocols:
 		TLSv1
@@ -19,13 +19,11 @@ Output from the tool is straightforward:
 	certificate:
 		subject: www.google.com
 		valid for host: YES
-		key length: 1024
+		key length: 1024 (TOO SHORT)
 		hash algorithm: SHA1
 		encryption algorithm: RSAEncryption
 		issued: Fri Dec 18 00:00:00 UTC 2009
 		expires: Sun Dec 18 23:59:59 UTC 2011
-		lifetime too long: NO
-
 	default cipher:
 		RC4-SHA
 
