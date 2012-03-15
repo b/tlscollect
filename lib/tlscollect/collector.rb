@@ -87,8 +87,8 @@ module TLSCollect
         raise CollectException.new, "Failed to initialize collection context."
       end
       @verified = certificate_verified?
-      @default_cipher, @certificate = gather_defaults
-      unless @default_cipher && @certificate
+      @_default_cipher, @certificate = gather_defaults
+      unless @_default_cipher && @certificate
         raise CollectException.new, "Could not determine default cipher and certificate."
       end
       test_ciphers
@@ -104,7 +104,8 @@ module TLSCollect
        ["NULL-MD5", "TLSv1/SSLv3", 0, 0],["NULL-MD5", "TLSv1/SSLv3", 0, 0]].each do |c|
         @candidate_ciphers << Cipher.parse(c)
       end
-      [["ECDHE-RSA-AES256-SHA", "TLSv1/SSLv3", 256, 256], ["ECDHE-RSA-AES128-SHA", "TLSv1/SSLv3", 128, 128],
+      [["ECDHE-RSA-RC4-SHA", "TLSv1/SSLv3", 128, 128], ["ECDHE-RSA-RC4-MD5", "TLSv1/SSLv3", 128, 128],
+       ["ECDHE-RSA-AES256-SHA", "TLSv1/SSLv3", 256, 256], ["ECDHE-RSA-AES128-SHA", "TLSv1/SSLv3", 128, 128],
        ["ECDHE-ECDSA-AES256-SHA", "TLSv1/SSLv3", 256, 256], ["ECDHE-ECDSA-AES128-SHA", "TLSv1/SSLv3", 128, 128],
        ["ECDHE-RSA-DES-CBC3-SHA", "TLSv1/SSLv3", 168, 168],  ["ECDHE-ECDSA-DES-CBC3-SHA", "TLSv1/SSLv3", 168, 168]].each do |c|
          @candidate_ciphers << Cipher.parse(c)
@@ -246,6 +247,7 @@ module TLSCollect
           end
         end
       end
+      @default_cipher = @ciphers.first
     end
   
     def included_cipher?(cipher)
