@@ -7,7 +7,7 @@ module TLSCollect
     attr_accessor :host, :addr, :port, :default_cipher, :protocols, :ciphers,
                   :certificate, :verified, :timestamp, :totals
   
-    @@default_ca_cert_path = "/lib/certs/ca-bundle.crt"
+    @@default_ca_cert_path = "certs/ca-bundle.crt"
 
     @@protocols = [:TLSv1, :SSLv3, :SSLv2]
     @@basic_ciphers = [
@@ -24,6 +24,7 @@ module TLSCollect
   
     def initialize(params)
       @ca_cert_path = (params[:ca_cert_path] ? params[:ca_cert_path] : @@default_ca_cert_path)
+      puts "CA CERT PATH IS #{@ca_cert_path}"
       
       @host = params[:host]
       @addr = (params[:addr] ? params[:addr] : addr = TCPSocket.gethostbyname(host)[3])

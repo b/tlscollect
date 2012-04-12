@@ -40,7 +40,7 @@ puts "Beginning collection for the following addresses:\n\t#{addrs.join("\n\t")}
 addrs.each do |addr|
   puts "\nTLS configuration for #{host} (#{addr}), port #{port}\n\n"
 
-  collector = TLSCollect::Collector.new(:host => host, :addr => addr, :port => port, :ca_cert_path => "certs/ca-bundle.crt")
+  collector = TLSCollect::Collector.new(:host => host, :addr => addr, :port => port)
   collector.collect
 
   puts "available protocols:\n\t#{collector.protocols.join("\n\t")}\n\n"
