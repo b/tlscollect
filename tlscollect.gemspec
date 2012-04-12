@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rubygems/specification'
 
 GEM = "tlscollect"
-GEM_VERSION = "0.0.2"
+GEM_VERSION = "0.0.3"
 AUTHOR = "Benjamin Black"
 EMAIL = "b@b3k.us"
 HOMEPAGE = "http://blog.b3k.us"

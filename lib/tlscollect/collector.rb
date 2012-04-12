@@ -7,6 +7,8 @@ module TLSCollect
     attr_accessor :host, :addr, :port, :default_cipher, :protocols, :ciphers,
                   :certificate, :verified, :timestamp, :totals
   
+    @@default_ca_cert_path = "/lib/certs/ca-bundle.crt"
+
     @@protocols = [:TLSv1, :SSLv3, :SSLv2]
     @@basic_ciphers = [
                        ['RC4-MD5', 'TLSv1/SSLv3', 128, 128],
@@ -21,6 +23,8 @@ module TLSCollect
                       ]
   
     def initialize(params)
+      @ca_cert_path = (params[:ca_cert_path] ? params[:ca_cert_path] : @@default_ca_cert_path)
+      
       @host = params[:host]
       @addr = (params[:addr] ? params[:addr] : addr = TCPSocket.gethostbyname(host)[3])
       @port = params[:port]
@@ -138,7 +142,7 @@ module TLSCollect
       return false unless sock
       context = OpenSSL::SSL::SSLContext.new()
       context.ciphers = @@basic_ciphers
-      context.ca_file = "/lib/certs/ca-bundle.crt"
+      context.ca_file = @ca_cert_path
       context.verify_depth = 16
       context.verify_mode = OpenSSL::SSL::VERIFY_PEER
       ssl = OpenSSL::SSL::SSLSocket.new(sock, context)
