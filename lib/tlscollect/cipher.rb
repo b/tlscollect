@@ -1,7 +1,7 @@
 module TLSCollect
   class Cipher
     
-    attr_accessor :cipher, :kx_alg, :auth_alg, :bulk_alg, :hash_alg, :protocols, :alg_bits, :key_length, :order
+    attr_accessor :name, :kx_alg, :auth_alg, :bulk_alg, :hash_alg, :protocols, :alg_bits, :key_length, :order
   
     def self.parse(cipher_a)
       c = cipher_a[0].split('-')
@@ -47,7 +47,7 @@ module TLSCollect
     end
   
     def initialize(params)
-      @cipher = params[:cipher]
+      @name = params[:cipher]
       @kx_alg = params[:kx_alg]
       @auth_alg = params[:auth_alg]
       @bulk_alg = params[:bulk_alg]
@@ -59,6 +59,10 @@ module TLSCollect
       @order = 0
     end
   
+    def cipher
+      name
+    end
+
     def to_s
       cipher + " " + protocols.join('/')
     end
@@ -69,7 +73,7 @@ module TLSCollect
   
     def to_h
       {
-       'cipher'     => cipher,
+       'name'     => cipher,
        'kx_alg'   => kx_alg,
        'auth_alg' => auth_alg,
        'bulk_alg' => bulk_alg,

@@ -248,6 +248,7 @@ module TLSCollect
         end
       end
       @default_cipher = @ciphers.first
+      @ciphers
     end
   
     def included_cipher?(cipher)

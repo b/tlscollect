@@ -5,7 +5,7 @@ require 'date'
 require 'spec/rake/spectask'
 
 GEM = "tlscollect"
-GEM_VERSION = "0.0.1"
+GEM_VERSION = "0.0.2"
 AUTHOR = "Benjamin Black"
 EMAIL = "b@b3k.us"
 HOMEPAGE = "http://blog.b3k.us"
