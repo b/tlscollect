@@ -138,7 +138,7 @@ module TLSCollect
       return false unless sock
       context = OpenSSL::SSL::SSLContext.new()
       context.ciphers = @@basic_ciphers
-      context.ca_file = "certs/ca-bundle.crt"
+      context.ca_file = "/lib/certs/ca-bundle.crt"
       context.verify_depth = 16
       context.verify_mode = OpenSSL::SSL::VERIFY_PEER
       ssl = OpenSSL::SSL::SSLSocket.new(sock, context)
